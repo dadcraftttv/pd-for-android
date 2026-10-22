@@ -30,6 +30,7 @@ public class PdAudio {
 	private static AudioWrapper audioWrapper = null;
 	private static int inputDeviceId = -1;
 	private static int outputDeviceId = -1;
+	private static int inputPreset = -1;
 	private static int bufferSizeInFrames = -1;
 	private static boolean autoReopen = true;
 	private static final Handler handler = new Handler(Looper.getMainLooper());
@@ -64,6 +65,7 @@ public class PdAudio {
 		stopAudio();
 		Map<String, String> options = new HashMap<String, String>();
 		options.put("inputDeviceId", String.valueOf(inputDeviceId));
+		options.put("inputPreset", String.valueOf(inputPreset));
 		options.put("outputDeviceId", String.valueOf(outputDeviceId));
 		options.put("bufferSizeInFrames", String.valueOf(bufferSizeInFrames));
 		options.put("autoReopen", String.valueOf(autoReopen ? 1 : 0));
@@ -97,6 +99,17 @@ public class PdAudio {
 	public synchronized static void setDevicesId(int inDeviceId, int outDeviceId) {
 		inputDeviceId = inDeviceId;
 		outputDeviceId = outDeviceId;
+	}
+
+	/**
+	 * Set the input preset (an android.media.MediaRecorder.AudioSource value, e.g. CAMCORDER = 5,
+	 * UNPROCESSED = 9) used when the input stream is opened. Call it before initAudio().
+	 * Only the Oboe implementation uses it.
+	 *
+	 * @param preset      the preset, or -1 for the implementation's default (VoiceRecognition for Oboe)
+	 */
+	public synchronized static void setInputPreset(int preset) {
+		inputPreset = preset;
 	}
 
 	/**
